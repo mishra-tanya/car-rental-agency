@@ -95,9 +95,14 @@ mysqli_close($conn);
                         <div class="mb-3">
                         <div id="successMessage" class="alert alert-success mt-3 d-none" role="alert">
         Successfully rented the car.
-    </div>
-                            <label for="numDays" class="form-label">Number of days:</label>
-                            <input type="number" class="form-control" id="numDays" name="numDays" required>
+    </div><label for="numDays" class="form-label">Number of days:</label>
+<select class="form-select" id="numDays" name="numDays" required>
+    <option value="">Select number of days</option>
+    <?php for ($i = 1; $i <= 10; $i++): ?>
+        <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+    <?php endfor; ?>
+</select>
+
                         </div>
                         <!-- Hidden input fields for customer ID and vehicle ID -->
                      

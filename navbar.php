@@ -12,6 +12,7 @@
         <li class="nav-item">
           <a class="nav-link" href="https://www.linkedin.com/in/tanya-mishra-b74410239/">Contact</a>
         </li>
+       
         <li class="nav-item">
           <a class="nav-link" href="login.php">Login</a>
         </li>
