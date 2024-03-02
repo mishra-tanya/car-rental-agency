@@ -1,13 +1,10 @@
 <?php
-session_start(); // Start the session
+session_start(); 
 
-// Check if the agency_id is set in the session
 if(isset($_SESSION['agency_id'])) {
     $agency_id = $_SESSION['agency_id'];
 } else {
-    // Handle the case where the agency_id is not set in the session
     echo "Agency Id not found in session.";
-    // You may redirect the user to the login page or handle it based on your application's logic
 }
 
 require('../config.php');

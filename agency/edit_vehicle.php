@@ -1,49 +1,37 @@
 <?php
-session_start(); // Start the session
-
-// Check if the user is logged in
+session_start(); 
 if (!isset($_SESSION['agency_id'])) {
-    // Redirect to the login page or handle the case where the user is not logged in
     header("Location: login.php");
-    exit; // Stop further execution
+    exit; 
 }
 
-// Include the database connection file
 require('../config.php');
 
-// Check if the vehicle ID is provided in the URL
 if (isset($_GET['id'])) {
     $vehicle_id = $_GET['id'];
 
-    // Fetch the vehicle details from the database
     $sql = "SELECT * FROM vehical_table WHERE vehicle_id = '$vehicle_id' AND agency_id = '" . $_SESSION['agency_id'] . "'";
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
     } else {
-        // Handle the case where the vehicle ID is not found or unauthorized
         echo "Vehicle not found or unauthorized to edit.";
         exit;
     }
 } else {
-    // Handle the case where the vehicle ID is not provided in the URL
     echo "Vehicle ID is missing.";
     exit;
 }
 
-// Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data
     $v_model = $_POST['v_model'];
     $v_number = $_POST['v_number'];
     $v_seat = $_POST['v_seat'];
     $v_rent = $_POST['v_rent'];
 
-    // Update the vehicle details in the database
     $sql = "UPDATE vehical_table SET v_model = '$v_model', v_number = '$v_number', v_seat = '$v_seat', v_rent = '$v_rent' WHERE vehicle_id = '$vehicle_id'";
     if (mysqli_query($conn, $sql)) {
-        // Fetch the updated vehicle details from the database
         $sql = "SELECT * FROM vehical_table WHERE vehicle_id = '$vehicle_id'";
         $result = mysqli_query($conn, $sql);
 

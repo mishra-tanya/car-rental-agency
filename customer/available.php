@@ -1,21 +1,15 @@
 <?php
-session_start(); // Start the session
+session_start();  
 
-// Check if the customer_id is set in the session
 if(isset($_SESSION['customer_id'])) {
     $customer_id = $_SESSION['customer_id'];
-    // Now you can use $customer_id throughout this file
 } else {
-    // Handle the case where the customer_id is not set in the session
     echo "Customer Id not found in session.";
-    // You may redirect the user to the login page or handle it based on your application's logic
 }
 
 if(isset($_POST['numDays']) && isset($_POST['vehicleId']) && isset($_POST['agencyId'])) {
-    // Retrieve form data
     echo "";
 }else {
-    // Handle the case where the form data is not received
     echo "";
 }
 
@@ -151,32 +145,26 @@ mysqli_close($conn);
         const agencyId = document.getElementById('agencyId').value;
         const customerId = document.getElementById('customerId').value;
 
-        // Send the form data using AJAX or perform any other actions as needed
         console.log('Vehicle ID:', vehicleId);
         console.log('Number of days:', numDays);
         console.log('Agency ID:', agencyId);
         console.log('Customer ID:', customerId);
         document.getElementById('successMessage').classList.remove('d-none');
 
-// Redirect to available.php after a delay
 setTimeout(function() {
     window.location.href = 'available.php';
 }, 3000);
-        // Close the modal
 
       
     });
-// Handle form submission
 document.getElementById('rentForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the default form submission behavior
+    event.preventDefault();  
 
-    // Retrieve form data
     const numDays = document.getElementById('numDays').value;
     const vehicleId = document.getElementById('vehicleId').value;
     const agencyId = document.getElementById('agencyId').value;
     const customerId = document.getElementById('customerId').value;
 
-    // Create a FormData object to store form data
     const formData = new FormData();
     formData.append('numDays', numDays);
     formData.append('vehicleId', vehicleId);
@@ -195,14 +183,11 @@ document.getElementById('rentForm').addEventListener('submit', function(event) {
         return response.text();
     })
     .then(data => {
-        // Handle successful response
-        console.log(data); // Log response data
-        // Close the modal
+        console.log(data);  
         var rentModal = new bootstrap.Modal(document.getElementById('rentModal'));
         rentModal.hide();
     })
     .catch(error => {
-        // Handle error
         console.error('There was a problem with the fetch operation:', error);
     });
 });

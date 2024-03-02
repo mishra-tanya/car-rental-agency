@@ -7,7 +7,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_type = $_POST["user_type"];
 
     if ($user_type == 'Agency') {
-        // Query to check agency credentials
         $query = "SELECT * FROM registerd_agency WHERE a_email = ? AND a_pass = ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("ss", $email, $password);
@@ -44,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$conn->close(); // Close the database connection
+$conn->close(); 
 ?>
 
 

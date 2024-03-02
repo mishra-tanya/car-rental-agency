@@ -28,13 +28,11 @@
         </thead>
         <tbody>
             <?php
-            session_start(); // Start the session
+            session_start();  
 
             require('../config.php');
             
-            // Check if the user is logged in
             if (!isset($_SESSION['agency_id'])) {
-                // Redirect to the login page or handle the case where the user is not logged in
                 header("Location: login.php");
                 exit; // Stop further execution
             }

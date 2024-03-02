@@ -1,14 +1,10 @@
 <?php
-session_start(); // Start the session
+session_start();  
 
-// Check if the customer_id is set in the session
 if(isset($_SESSION['customer_id'])) {
     $customer_id = $_SESSION['customer_id'];
-    // Now you can use $customer_id throughout this file
 } else {
-    // Handle the case where the customer_id is not set in the session
     echo "Customer Id not found in session.";
-    // You may redirect the user to the login page or handle it based on your application's logic
 }?>
 <!DOCTYPE html>
 <html lang="en">
