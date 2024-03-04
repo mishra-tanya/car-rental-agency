@@ -7,6 +7,8 @@ if (!isset($_SESSION['agency_id'])) {
 
 require('../config.php');
 
+$errors = [];
+
 if (isset($_GET['id'])) {
     $vehicle_id = $_GET['id'];
 
@@ -30,17 +32,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $v_seat = $_POST['v_seat'];
     $v_rent = $_POST['v_rent'];
 
-    $sql = "UPDATE vehical_table SET v_model = '$v_model', v_number = '$v_number', v_seat = '$v_seat', v_rent = '$v_rent' WHERE vehicle_id = '$vehicle_id'";
-    if (mysqli_query($conn, $sql)) {
-        $sql = "SELECT * FROM vehical_table WHERE vehicle_id = '$vehicle_id'";
-        $result = mysqli_query($conn, $sql);
+    // Validate Vehicle Model
+    if (empty($v_model)) {
+        $errors[] = "Vehicle model is required.";
+    }
+    
+    // Validate Vehicle Number
+    if (empty($v_number)) {
+        $errors[] = "Vehicle number is required.";
+    }
+    
+    // Validate Seating Capacity
+    if (empty($v_seat) || !is_numeric($v_seat)) {
+        $errors[] = "Seating capacity must be a number.";
+    }
+    
+    // Validate Rent Per Day
+    if (empty($v_rent) || !is_numeric($v_rent)) {
+        $errors[] = "Rent per day must be a number.";
+    }
 
-        if (mysqli_num_rows($result) == 1) {
-            $row = mysqli_fetch_assoc($result);
+    if (empty($errors)) {
+        $sql = "UPDATE vehical_table SET v_model = '$v_model', v_number = '$v_number', v_seat = '$v_seat', v_rent = '$v_rent' WHERE vehicle_id = '$vehicle_id'";
+        if (mysqli_query($conn, $sql)) {
+            $sql = "SELECT * FROM vehical_table WHERE vehicle_id = '$vehicle_id'";
+            $result = mysqli_query($conn, $sql);
+
+            if (mysqli_num_rows($result) == 1) {
+                $row = mysqli_fetch_assoc($result);
+            }
+            $success_message = "Vehicle details updated successfully.";
+        } else {
+            echo "Error updating vehicle details: " . mysqli_error($conn);
         }
-        $success_message = "Vehicle details updated successfully.";
     } else {
-        echo "Error updating vehicle details: " . mysqli_error($conn);
+        // Display validation errors
+        foreach ($errors as $error) {
+            echo "<div class='alert alert-danger' role='alert'>$error</div>";
+        }
     }
 }
 ?>

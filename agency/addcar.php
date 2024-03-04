@@ -4,30 +4,50 @@ require_once("nav.php");
 
 require_once("../config.php");
 
+$errors = [];
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $v_model = $_POST['v_model'];
     $v_number = $_POST['v_number'];
     $v_seat = $_POST['v_seat'];
     $v_rent = $_POST['v_rent'];
     
-    // Retrieve agency_id from session
-    $agency_id = $_SESSION['agency_id']; 
+    if (empty($v_model)) {
+        $errors[] = "Vehicle model is required.";
+    }
     
-    $sql = "INSERT INTO vehical_table (agency_id, v_model, v_number, v_seat, v_rent) 
-            VALUES ('$agency_id', '$v_model', '$v_number', $v_seat, $v_rent)";
+    if (empty($v_number)) {
+        $errors[] = "Vehicle number is required.";
+    }
     
-    $result = mysqli_query($conn, $sql);
+    if (empty($v_seat) || !is_numeric($v_seat)) {
+        $errors[] = "Seating capacity must be a number.";
+    }
     
-    if ($result) {
-        // Retrieve the last inserted ID
-        $vehicle_id = mysqli_insert_id($conn);
+    if (empty($v_rent) || !is_numeric($v_rent)) {
+        $errors[] = "Rent per day must be a number.";
+    }
+    
+    if (empty($errors)) {
+        $agency_id = $_SESSION['agency_id']; 
         
-        // Store the vehicle ID in a session variable
-        $_SESSION['vehicle_id'] = $vehicle_id;
+        $sql = "INSERT INTO vehical_table (agency_id, v_model, v_number, v_seat, v_rent) 
+                VALUES ('$agency_id', '$v_model', '$v_number', $v_seat, $v_rent)";
         
-        echo "<div class='alert alert-success text-center' role='alert'>Vehicle added successfully.</div>";
+        $result = mysqli_query($conn, $sql);
+        
+        if ($result) {
+            $vehicle_id = mysqli_insert_id($conn);
+            $_SESSION['vehicle_id'] = $vehicle_id;
+            
+            echo "<div class='alert alert-success text-center' role='alert'>Vehicle added successfully.</div>";
+        } else {
+            echo "<div class='alert alert-danger text-center' role='alert'>Error: " . mysqli_error($conn) . "</div>";
+        }
     } else {
-        echo "<div class='alert alert-danger text-center' role='alert'>Error: " . mysqli_error($conn) . "</div>";
+        foreach ($errors as $error) {
+            echo "<div class='alert alert-danger text-center' role='alert'>$error</div>";
+        }
     }
     
     mysqli_close($conn);
@@ -52,9 +72,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <div class="container" style="display: flex; justify-content: center; align-items: center; height: 110vh;">
+    <div class="container mt-3" >
 
-        <div class="container card shadow-lg" style="width: 500px;">
+        <div class="container card shadow-lg" >
         <h2 class="text-center mt-3 mb-3">Add Car Details</h2>
 
             <form method="POST">

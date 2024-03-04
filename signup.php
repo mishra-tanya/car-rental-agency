@@ -2,45 +2,43 @@
     require("config.php");
     
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $user_type=$_POST['user_type'];
-    if($user_type=='Agency'){
-        if (empty($_POST["a_email"]) || empty($_POST["a_pass"]) || empty($user_type)) {
-            echo "<script>alert('Please enter all required fields.'); window.location.assign('signup.php');</script>";
-            exit;
-        }
-        if (!filter_var($_POST["a_email"], FILTER_VALIDATE_EMAIL)) {
-            echo "<script>alert('Invalid email');  window.location.assign('signup.php');</script>";
-            exit;
-        }
-        $sql_max_agency_id = "SELECT MAX(agency_id) AS max_agency_id FROM registerd_agency";
-        $result_max_agency_id = mysqli_query($conn, $sql_max_agency_id);
-        $row_max_agency_id = mysqli_fetch_assoc($result_max_agency_id);
-        $agency_id = $row_max_agency_id['max_agency_id'] + 1;
+    if(isset($_POST['user_type'])) {
+        $user_type = $_POST['user_type'];
+        if($user_type == 'Agency'){
+            if (empty($_POST["a_email"]) || empty($_POST["a_pass"]) || empty($user_type)) {
+                echo "<script>alert('Please enter all required fields.'); window.location.assign('signup.php');</script>";
+                exit;
+            }
+            if (!filter_var($_POST["a_email"], FILTER_VALIDATE_EMAIL)) {
+                echo "<script>alert('Invalid email');  window.location.assign('signup.php');</script>";
+                exit;
+            }
+            $sql_max_agency_id = "SELECT MAX(agency_id) AS max_agency_id FROM registerd_agency";
+            $result_max_agency_id = mysqli_query($conn, $sql_max_agency_id);
+            $row_max_agency_id = mysqli_fetch_assoc($result_max_agency_id);
+            $agency_id = $row_max_agency_id['max_agency_id'] + 1;
 
-        $a_name=$_POST['a_name'];
-        $a_add=$_POST['a_add'];
-        $a_phone=$_POST['a_phone'];
-        $a_email=$_POST['a_email'];
-        $a_pass=$_POST['a_pass'];
-        $sql="SELECT * FROM registerd_agency WHERE a_email='$a_email'";
-        $row=mysqli_query($conn,$sql);
-        if(mysqli_num_rows($row)>0){
-            echo "<script>alert('Email already exists!');  window.location.assign('registration.php');</script>";
-            die();
-        }
-        $sql = "INSERT INTO registerd_agency (agency_id,user_type, a_name, a_add, a_phone, a_email, a_pass) VALUES ($agency_id,'$user_type', '$a_name', '$a_add', '$a_phone', '$a_email', '$a_pass')";
-        $result = mysqli_query($conn, $sql);
-        
-        if ($result) {
-            echo "<script>alert('Registration successful!'); window.location.assign('login.php');</script>";
-        } else {
-            echo "<script>alert('Registration failed!'); window.location.assign('registration.php');</script>";
-        }
+            $a_name=$_POST['a_name'];
+            $a_add=$_POST['a_add'];
+            $a_phone=$_POST['a_phone'];
+            $a_email=$_POST['a_email'];
+            $a_pass=$_POST['a_pass'];
+            $sql="SELECT * FROM registerd_agency WHERE a_email='$a_email'";
+            $row=mysqli_query($conn,$sql);
+            if(mysqli_num_rows($row)>0){
+                echo "<script>alert('Email already exists!');  window.location.assign('registration.php');</script>";
+                die();
+            }
+            $sql = "INSERT INTO registerd_agency (agency_id,user_type, a_name, a_add, a_phone, a_email, a_pass) VALUES ($agency_id,'$user_type', '$a_name', '$a_add', '$a_phone', '$a_email', '$a_pass')";
+            $result = mysqli_query($conn, $sql);
+            
+            if ($result) {
+                echo "<script>alert('Registration successful!'); window.location.assign('login.php');</script>";
+            } else {
+                echo "<script>alert('Registration failed!'); window.location.assign('registration.php');</script>";
+            }
 
-    }
-
-    else{
-        if($user_type=='Customer'){
+        } elseif($user_type == 'Customer') {
             if (empty($_POST["c_email"]) || empty($_POST["c_pass"]) || empty($user_type)) {
                 echo "<script>alert('Please enter all required fields.'); window.location.assign('signup.php');</script>";
                 exit;
@@ -72,12 +70,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "<script>alert('Registration failed!'); window.location.assign('registration.php');</script>";
             }
-            
         }
+    } else {
+        echo "<script>alert('Please select a user type.'); window.location.assign('signup.php');</script>";
+        exit;
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -93,70 +92,79 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
     <?php require_once("navbar.php");?>
-<div class="d-flex justify-content-center">
-    <div class="container card shadow-lg m-4 ">
-    <h2 class="text-center mt-2">Registeration Page</h2>
+    <div class="d-flex justify-content-center">
+        <div class="container card shadow-lg m-4 ">
+            <h2 class="text-center mt-2">Registration Page</h2>
 
-        <form action='' method='POST'>
-            <div class="p-4">
-                <div class="form-group mb-3">
-                    <label for="user_type" class="mb-3">Choose your account type:</label>
-                    <select class="form-control" id="user_type" name="user_type">
-                        <option value="Agency" selected>Agency</option>
-                        <option value="Customer">Customer</option>
-                    </select>
-                </div>
+            <!-- Agency Registration Form -->
+            <form action='' method='POST' onsubmit="return validateAgencyForm()">
+                <div class="p-4">
+                    <div class="form-group mb-3">
+                        <label for="user_type" class="mb-3">Choose your account type:</label>
+                        <select class="form-control" id="user_type" name="user_type">
+                            <option value="Agency" selected>Agency</option>
+                            <option value="Customer">Customer</option>
+                        </select>
+                    </div>
 
-                <!-- Agency details -->
-                <div id="agencyfield" class="agency-fields">
-                    <label>Agency Name:</label>
-                    <input type="text" required class="form-control" id="" name="a_name">
+                    <!-- Agency details -->
+                    <div id="agencyfield" class="agency-fields">
+                        <label>Agency Name:</label>
+                        <input type="text" required class="form-control" id="" name="a_name">
 
-                    <label>Agency Address:</label>
-                    <input type="text"required class="form-control" id="" name="a_add">
+                        <label>Agency Address:</label>
+                        <input type="text" required class="form-control" id="" name="a_add">
 
-                    <label>Phone number:</label>
-                    <input type="text"required class="form-control" id="" name="a_phone">
+                        <label>Phone number:</label>
+                        <input type="text" required class="form-control" id="" name="a_phone">
 
-                    <label for="customer_email" class="form-label">Email address</label>
-                    <input type="email" required class="form-control" name="a_email" id="customer_email" aria-describedby="emailHelp">
-                    
-                    <label for="customer_password" class="form-label">Password</label>
-                    <input type="password"required class="form-control" name="a_pass" id="customer_password">
+                        <label for="customer_email" class="form-label">Email address</label>
+                        <input type="email" required class="form-control" name="a_email" id="customer_email"
+                            aria-describedby="emailHelp">
 
-                <div class="d-flex justify-content-center mt-3">
-                    <button type="submit" class="btn btn-primary">Register</button>
-                </div>
-                <div class="mt-2">
-                    <p>Already Registered? <a href="login.php">Login</a> Now</p>
+                        <label for="customer_password" class="form-label">Password</label>
+                        <input type="password" required class="form-control" name="a_pass" id="customer_password">
+
+                        <div class="d-flex justify-content-center mt-3">
+                            <button type="submit" class="btn btn-primary">Register as Agency</button>
+                        </div>
+                        <div class="mt-2">
+                            <p>Already Registered? <a href="login.php">Login</a> Now</p>
+                        </div>
                     </div>
                 </div>
+            </form>
 
+            <!-- Customer Registration Form -->
+            <form action='' method='POST' onsubmit="return validateCustomerForm()">
+                <div class="px-4">
+                  
+                <input type="hidden" name="user_type" value="Customer">
+                    <!-- Customer details -->
+                    <div id="customerfield" class="customer-fields d-none">
+                        <label>Customer Name:</label>
+                        <input type="text" required class="form-control" name="c_name" id="">
 
-    <!-- Customer details -->
+                        <label>Phone number:</label>
+                        <input type="text" required class="form-control" id="" name="c_phone">
 
-    <div id="customerfield" class="customer-fields d-none">
-        <label>Customer Name:</label>
-        <input type="text"required class="form-control" name="c_name"id="customer_name">
+                        <label for="customer_email" class="form-label">Email address</label>
+                        <input type="email" required class="form-control" id="customer_email" name="c_email"
+                            aria-describedby="emailHelp">
+                            
+                        <label for="customer_password" class="form-label">Password</label>
+                        <input type="password" required class="form-control" name="c_pass" id="customer_password">
 
-        <label>Phone number:</label>
-        <input type="text"required class="form-control" id="" name="c_phone">
-        <label for="customer_email" class="form-label">Email address</label>
-        <input type="email"  required class="form-control" id="customer_email" name="c_email"aria-describedby="emailHelp">
-        <label for="customer_password" class="form-label">Password</label>
-        <input type="password"required class="form-control" name="c_pass"id="customer_password">
-
-    <div class="d-flex justify-content-center mt-3">
-        <button type="submit" class="btn btn-primary">Register</button>
-    </div>
-    <div class="mt-2">
-                    <p>Already Registered? <a href="login.php">Login</a> Now</p>
+                        <div class="d-flex justify-content-center mt-3">
+                            <button type="submit" class="btn btn-primary">Register as Customer</button>
+                        </div>
+                        <div class="mt-2">
+                            <p>Already Registered? <a href="login.php">Login</a> Now</p>
+                        </div>
                     </div>
-    </div>
-
-    </div>
-    </form>
-    </div>
+                </div>
+            </form>
+        </div>
     </div>
     </div>
     </div>
@@ -178,6 +186,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
     });
     </script>
+<script>
+    function validateAgencyForm() {
+        var a_name = document.getElementById("a_name").value;
+        var a_add = document.getElementById("a_add").value;
+        var a_phone = document.getElementById("a_phone").value;
+        var a_email = document.getElementById("customer_email").value;
+        var a_pass = document.getElementById("customer_password").value;
+
+        if (a_name.trim() == "" || a_add.trim() == "" || a_phone.trim() == "" || a_email.trim() == "" || a_pass.trim() == "") {
+            alert("Please enter all required fields.");
+            return false;
+        }
+        if (!validateEmail(a_email)) {
+            alert("Invalid email address.");
+            return false;
+        }
+        return true;
+    }
+
+    function validateCustomerForm() {
+        var c_name = document.getElementById("c_name").value;
+        var c_phone = document.getElementById("c_phone").value;
+        var c_email = document.getElementById("customer_email").value;
+        var c_pass = document.getElementById("customer_password").value;
+
+        if (c_name.trim() == "" || c_phone.trim() == "" || c_email.trim() == "" || c_pass.trim() == "") {
+            alert("Please enter all required fields.");
+            return false;
+        }
+        if (!validateEmail(c_email)) {
+            alert("Invalid email address.");
+            return false;
+        }
+        return true;
+    }
+
+    function validateEmail(email) {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+</script>
+
 </body>
 
 </html>

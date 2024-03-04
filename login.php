@@ -69,12 +69,9 @@ $conn->close();
 <body>
     <?php
     require_once("navbar.php");?>
-    <div class="container" style=" display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 95vh; ">
+    <div class="container" >
 
-        <div class="conatiner card shadow-lg" style="width: 400px; ">
+        <div class="conatiner card shadow-lg mt-3" >
         <h2 class="text-center mt-2">Login Page</h2>
             <form method="POST">
                 <div class="p-4">
