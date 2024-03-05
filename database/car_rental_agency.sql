@@ -57,7 +57,7 @@ CREATE TABLE `registerd_agency` (
   `user_type` varchar(500) NOT NULL,
   `a_name` varchar(255) NOT NULL,
   `a_add` varchar(500) NOT NULL,
-  `a_phone` int(11) DEFAULT NULL,
+  `a_phone`  varchar(500) NOT NULL,
   `a_email` varchar(500) DEFAULT NULL,
   `a_pass` varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -81,7 +81,7 @@ CREATE TABLE `registered_customer` (
   `customer_id` int(11) NOT NULL,
   `user_type` varchar(500) DEFAULT NULL,
   `c_name` varchar(255) DEFAULT NULL,
-  `c_phone` int(11) NOT NULL,
+  `c_phone`  varchar(500) NOT NULL,
   `c_email` varchar(500) DEFAULT NULL,
   `c_pass` varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
