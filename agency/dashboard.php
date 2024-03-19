@@ -14,11 +14,14 @@
     <?php 
     require("nav.php");
     ?>
-<h2 class="text-center mb-3 mb-3">Agency Cars</h2>
-    <table class="table table-bordered border-secondary text-center border-black table-striped table-hover">
-        <thead>
+
+<h2 class="text-center mb-3 mb-3"><strong>Agency Cars</strong></h2>
+   <div class="m-3 table-responsive">
+   <table class="table table-bordered border-secondary text-center border-black table-striped table-hover">
+        <thead class="text-white bg-dark">
             <tr>
                 <th>S.No.</th>
+                <th>Image</th>
                 <th>Vehical Model</th>
                 <th>Vehical Number</th>
                 <th>Seating Capacity</th>
@@ -33,7 +36,7 @@
             require('../config.php');
             
             if (!isset($_SESSION['agency_id'])) {
-                header("Location: login.php");
+                header("Location: ../login.php");
                 exit; // Stop further execution
             }
             
@@ -48,11 +51,12 @@
     while ($row = mysqli_fetch_assoc($result)) {
         echo "<tr>";
         echo "<td>" . $i . "</td>";
+        echo "<td><img src='" . $row['image_path'] . "' style='max-width: 100px; max-height: 100px;' alt='Vehicle Image'></td>";
         echo "<td>" . $row['v_model'] . "</td>";
         echo "<td>" . $row['v_number'] . "</td>";
         echo "<td>" . $row['v_seat'] . "</td>";
         echo "<td>" . $row['v_rent'] . "</td>";
-        echo "<td><a href='edit_vehicle.php?id=" . $row['vehicle_id'] . "' class='btn btn-outline-primary'>Edit</a></td>";
+        echo "<td><a href='edit_vehicle.php?id=" . $row['vehicle_id'] . "' class='btn btn-outline-dark'>Edit</a></td>";
        
         echo "</tr>";
         $i++;
@@ -68,6 +72,7 @@
 
         </tbody>
     </table>
+   </div>
 
 
     <footer>
@@ -78,7 +83,6 @@
                 </div>
             </div>
         </div>
-    </footer>
     </footer>
     
 </body>

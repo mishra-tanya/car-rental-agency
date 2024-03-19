@@ -47,8 +47,6 @@ $conn->close();
 ?>
 
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,49 +58,98 @@ $conn->close();
     <title>Login Page</title>
     <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;  
+            font-family: Arial, sans-serif;  
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            width: 400px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;  
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 10px;  
+            font-weight: bold; 
+            background-color: #007bff;  
+            border-color: #007bff;  
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;  
+            border-color: #0056b3;  
+        }
+
+        .mt-2 {
+            text-align: center;
+            color: #777;  
+        }
+    </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- JavaScript (optional, for Bootstrap's JavaScript plugins) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
-
+<style>
+    body{
+        background-image: url("car2.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    }
+</style>
 <body>
-    <?php
-    require_once("navbar.php");?>
-    <div class="container" >
-
-        <div class="conatiner card shadow-lg mt-3" >
-        <h2 class="text-center mt-2">Login Page</h2>
+    <?php require_once("navbar.php"); ?>
+    <div class="container">
+        <div class="card shadow">
+            <h2 style="font-family:Lucida Console, Courier, monospace;">Login</h2>
             <form method="POST">
-                <div class="p-4">
-
-                    <div class="form-group  mb-3">
-                        <label for="user_type " class="mb-3">Choose your account type:</label>
+                <div class="p-2">
+                    <div class="form-group mb-4">
+                        <label for="user_type">Account Type:</label>
                         <select class="form-control" id="user_type" name="user_type">
                             <option value="Agency" selected>Agency</option>
                             <option value="Customer">Customer</option>
                         </select>
                     </div>
-                    <div class="mb-3 ">
-                        <label for="exampleInputEmail1" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" required>
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input type="password" class="form-control" name="password" id="exampleInputPassword1">
+                        <input type="password" class="form-control" name="password" id="exampleInputPassword1" required>
                     </div>
-                    <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary ">Login</button>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-dark">Login</button>
                     </div>
-                    <div class="mt-2">
-                    <p>Not Registered? <a href="signup.php">Register</a> Now</p>
+                    <div class="mt-4">
+                        <p>Not Registered? <a href="signup.php" class="text-dark">Sign Up</a></p>
                     </div>
                 </div>
             </form>
         </div>
-
-    </div>
-    </div>
     </div>
 </body>
 

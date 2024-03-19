@@ -89,12 +89,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
+<style>
+     body{
+        background-image: url("car2.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    }
+</style>
 <body>
     <?php require_once("navbar.php");?>
     <div class="d-flex justify-content-center">
         <div class="container card shadow-lg m-4 ">
-            <h2 class="text-center mt-2">Registration Page</h2>
+            <h2 class="text-center p-4"style="font-family:Lucida Console, Courier, monospace;">Registration Page</h2>
 
             <!-- Agency Registration Form -->
             <form action='' method='POST' onsubmit="return validateAgencyForm()">
@@ -126,10 +132,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <input type="password" required class="form-control" name="a_pass" id="customer_password">
 
                         <div class="d-flex justify-content-center mt-3">
-                            <button type="submit" class="btn btn-primary">Register as Agency</button>
+                            <button type="submit" class="btn btn-dark">Register as Agency</button>
                         </div>
                         <div class="mt-2">
-                            <p>Already Registered? <a href="login.php">Login</a> Now</p>
+                            <p>Already Registered? <a href="login.php" class="text-dark">Login</a> Now</p>
                         </div>
                     </div>
                 </div>
@@ -170,7 +176,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
 
-    <!-- JavaScript -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
     $(document).ready(function() {

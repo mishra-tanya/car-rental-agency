@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 02, 2024 at 01:07 PM
+-- Generation Time: Mar 19, 2024 at 08:56 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -28,22 +28,14 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `booked_cars` (
-  `id` int(11) NOT NULL,
+  `rental_id` int(11) NOT NULL,
   `vehicle_id` int(11) DEFAULT NULL,
   `customer_id` int(11) NOT NULL,
   `agency_id` int(11) NOT NULL,
   `daysforrent` int(11) NOT NULL,
+  `startdate` date NOT NULL,
   `booking_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `booked_cars`
---
-
-INSERT INTO `booked_cars` (`id`, `vehicle_id`, `customer_id`, `agency_id`, `daysforrent`, `booking_date`) VALUES
-(1, 4, 2, 2, 3, '2024-03-02 12:04:07'),
-(2, 2, 2, 1, 4, '2024-03-02 12:04:50'),
-(3, 1, 1, 1, 2, '2024-03-02 12:06:10');
 
 -- --------------------------------------------------------
 
@@ -57,18 +49,10 @@ CREATE TABLE `registerd_agency` (
   `user_type` varchar(500) NOT NULL,
   `a_name` varchar(255) NOT NULL,
   `a_add` varchar(500) NOT NULL,
-  `a_phone`  varchar(500) NOT NULL,
+  `a_phone` varchar(500) DEFAULT NULL,
   `a_email` varchar(500) DEFAULT NULL,
   `a_pass` varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `registerd_agency`
---
-
-INSERT INTO `registerd_agency` (`id`, `agency_id`, `user_type`, `a_name`, `a_add`, `a_phone`, `a_email`, `a_pass`) VALUES
-(1, 1, 'Agency', 'Speedy Drive Car Rentals', '23 MG Road, Mumbai, Maharashtra, India', 2147483647, 'speedy_agency@gmail.com', '123'),
-(2, 2, 'Agency', 'Swift Wheels Rent-A-Car', '456 Brigade Road, Bangalore, Karnataka, India', 2147483647, 'swift_rental@gmail.com', '123');
 
 -- --------------------------------------------------------
 
@@ -81,18 +65,10 @@ CREATE TABLE `registered_customer` (
   `customer_id` int(11) NOT NULL,
   `user_type` varchar(500) DEFAULT NULL,
   `c_name` varchar(255) DEFAULT NULL,
-  `c_phone`  varchar(500) NOT NULL,
+  `c_phone` varchar(500) NOT NULL,
   `c_email` varchar(500) DEFAULT NULL,
   `c_pass` varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `registered_customer`
---
-
-INSERT INTO `registered_customer` (`id`, `customer_id`, `user_type`, `c_name`, `c_phone`, `c_email`, `c_pass`) VALUES
-(1, 1, 'Customer', 'Rossie', 2147483647, 'rossie@gmail.com', '123'),
-(2, 2, 'Customer', 'Tanya', 2147483647, 'tanya@gmail.com', '123');
 
 -- --------------------------------------------------------
 
@@ -106,19 +82,10 @@ CREATE TABLE `vehical_table` (
   `v_model` varchar(600) DEFAULT NULL,
   `v_number` varchar(600) DEFAULT NULL,
   `v_seat` int(11) DEFAULT NULL,
-  `v_rent` int(11) DEFAULT NULL
+  `v_rent` int(11) DEFAULT NULL,
+  `image_path` varchar(1000) NOT NULL,
+  `rental_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `vehical_table`
---
-
-INSERT INTO `vehical_table` (`vehicle_id`, `agency_id`, `v_model`, `v_number`, `v_seat`, `v_rent`) VALUES
-(1, 1, 'Toyota Innova', ' MH 01 AB 1234', 7, 2500),
-(2, 1, 'Maruti Swift Dzire', 'KA 02 CD 5678', 5, 1800),
-(3, 1, 'Honda City', 'DL 03 EF 9012', 5, 2200),
-(4, 2, 'Hyundai Creta 1', ' TN 04 GH 3456', 5, 2600),
-(5, 2, 'Ford EcoSport', 'WB 05 IJ 7890', 5, 2000);
 
 --
 -- Indexes for dumped tables
@@ -128,7 +95,7 @@ INSERT INTO `vehical_table` (`vehicle_id`, `agency_id`, `v_model`, `v_number`, `
 -- Indexes for table `booked_cars`
 --
 ALTER TABLE `booked_cars`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`rental_id`),
   ADD KEY `vehicle_id` (`vehicle_id`);
 
 --
@@ -157,25 +124,25 @@ ALTER TABLE `vehical_table`
 -- AUTO_INCREMENT for table `booked_cars`
 --
 ALTER TABLE `booked_cars`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `rental_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `registerd_agency`
 --
 ALTER TABLE `registerd_agency`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `registered_customer`
 --
 ALTER TABLE `registered_customer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `vehical_table`
 --
 ALTER TABLE `vehical_table`
-  MODIFY `vehicle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `vehicle_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
